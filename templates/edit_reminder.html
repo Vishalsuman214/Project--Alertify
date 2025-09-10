@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Reminder</title>
+</head>
+<body>
+    <h1>Edit Reminder</h1>
+    <form method="POST">
+        <input type="text" name="title" value="{{ reminder.title }}" placeholder="Reminder Title" required>
+        <textarea name="description" placeholder="Description (optional)">{{ reminder.description }}</textarea>
+        <input type="datetime-local" name="reminder_time" value="{{ reminder_time.strftime('%Y-%m-%dT%H:%M') }}" required>
+        <input type="email" name="recipient_email" value="{{ reminder.recipient_email or '' }}" placeholder="Recipient Email (optional - defaults to your email)">
+        <button type="submit">Update Reminder</button>
+    </form>
+    <a href="{{ url_for('reminders.dashboard') }}">Back to Dashboard</a>
+</body>
+</html>
