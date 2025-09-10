@@ -3,9 +3,10 @@ import os
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
 
-# File paths
-USERS_CSV = 'users.csv'
-REMINDERS_CSV = 'reminders.csv'
+# File paths - use /tmp for Vercel deployment
+TMP_DIR = '/tmp'
+USERS_CSV = os.path.join(TMP_DIR, 'users.csv')
+REMINDERS_CSV = os.path.join(TMP_DIR, 'reminders.csv')
 
 # Ensure CSV files exist with headers
 def init_csv_files():
@@ -91,32 +92,7 @@ def update_user_email_credentials(user_id, new_email, new_app_password):
 
     return updated
 
-def update_user_email_credentials(user_id, new_email, new_app_password):
-    if not os.path.exists(USERS_CSV):
-        return False
 
-    users = []
-    updated = False
-
-    with open(USERS_CSV, 'r', encoding='utf-8') as f:
-        reader = csv.DictReader(f)
-        fieldnames = reader.fieldnames
-        if 'app_password' not in fieldnames:
-            fieldnames = list(fieldnames) + ['app_password']
-        for user in reader:
-            if user['id'] == str(user_id):
-                user['email'] = new_email
-                user['app_password'] = new_app_password
-                updated = True
-            users.append(user)
-
-    if updated:
-        with open(USERS_CSV, 'w', newline='', encoding='utf-8') as f:
-            writer = csv.DictWriter(f, fieldnames=fieldnames)
-            writer.writeheader()
-            writer.writerows(users)
-
-    return updated
 
 # Reminder management functions
 def get_next_reminder_id():

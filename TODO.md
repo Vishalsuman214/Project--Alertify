@@ -1,14 +1,35 @@
-# TODO: Add Email Credentials Management
+# Vercel Deployment Fixes - FUNCTION_INVOCATION_FAILED Resolution
 
-## Tasks
-- [x] Update users.csv to include email and app_password fields
-- [x] Update csv_handler.py to add functions for getting/updating user email credentials
-- [x] Create email_credentials.html template for the form
-- [x] Add new route in auth.py for handling email credentials GET/POST
-- [x] Add button on dashboard.html to access email credentials page
-- [x] Modify email_service.py to use dynamic user credentials instead of hardcoded ones
-- [x] Remove default email credentials - users must set their own
-- [x] Reset CSV files to remove hardcoded email data
-- [x] Add proper error handling for missing credentials
-- [x] Test the email credentials update flow
-- [x] Verify email sending still works with user-specific credentials
+## Issues Fixed:
+- [x] Removed BackgroundScheduler (incompatible with serverless)
+- [x] Updated Flask app configuration for Vercel
+- [x] Fixed template folder path for backend structure
+- [x] Updated SECRET_KEY to use environment variables
+- [x] Modified CSV file paths to use /tmp directory
+- [x] Removed duplicate update_user_email_credentials function
+
+## Key Changes Made:
+
+### 1. app.py Updates:
+- Removed APScheduler BackgroundScheduler
+- Added template_folder='../templates' to Flask app config
+- Changed SECRET_KEY to use os.environ.get()
+- Created app instance for Vercel deployment
+
+### 2. csv_handler.py Updates:
+- Changed file paths to use /tmp directory for Vercel
+- Removed duplicate update_user_email_credentials function
+
+### 3. Deployment Configuration:
+- vercel.json properly configured for Python runtime
+- requirements.txt in root directory
+
+## Next Steps:
+- Deploy to Vercel and test
+- Set SECRET_KEY environment variable in Vercel dashboard
+- Monitor for any remaining issues
+
+## Notes:
+- Email reminders will need external cron job service (not BackgroundScheduler)
+- CSV files now stored in /tmp (ephemeral storage)
+- App structure optimized for serverless deployment
